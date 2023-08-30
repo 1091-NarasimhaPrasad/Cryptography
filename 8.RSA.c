@@ -1,34 +1,25 @@
 #include <stdio.h>
-#include <stdlib.h>
-int power(int base, unsigned int exponent, int modulus) {
-    int result = 1;
-    base = base % modulus;
-    while (exponent > 0) {
-        if (exponent % 2 == 1)
-            result = (result * base) % modulus;
-        exponent = exponent >> 1;
-        base = (base * base) % modulus;
-    }
-    return result;
-}
-int encrypt(int plaintext, int e, int n) {
-    return power(plaintext, e, n);
-}
-int decrypt(int ciphertext, int d, int n) {
-    return power(ciphertext, d, n);
-}
+#include <math.h>
 int main() {
-    int p = 3; 
-    int q = 11; 
-    int n = p * q;
-    int phi = (p - 1) * (q - 1);
-    int e = 3;
-    int d = 7;
-    int plaintext = 65;
-    int encrypted = encrypt(plaintext, e, n);
-    int decrypted = decrypt(encrypted, d, n);
-    printf("Original Plaintext: %d\n", plaintext);
-    printf("Encrypted: %d\n", encrypted);
-    printf("Decrypted: %d\n", decrypted);
+    int p, q, m, n, dn, e, c, d, x, y;
+    printf("Enter the value of p: ");
+    scanf("%d", &p);
+    printf("Enter the value of q: ");  
+    scanf("%d", &q);
+    printf("Enter the value of m: ");
+    scanf("%d", &m);
+    printf("Enter the value of e: ");
+    scanf("%d", &e);
+    n = p * q;
+    dn = (p - 1) * (q - 1);
+    for (d = 1; d < dn; d++) {
+        if ((e * d) % dn == 1) {
+            break;
+        }
+    }
+    c = fmod(pow(m, e), n);
+    x = fmod(pow(c, d), n);
+    printf("Encrypted text: %d\n", c);
+    printf("Decrypted text: %d\n", (int)x);
     return 0;
 }
