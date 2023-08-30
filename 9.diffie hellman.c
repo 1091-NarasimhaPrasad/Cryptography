@@ -1,32 +1,20 @@
-#include<stdio.h>
-#include<conio.h>
-long long int power(int a, int b, int mod)
-{
-long long int t;
-if(b==1)
-return a;
-t=power(a,b/2,mod);
-if(b%2==0)
-return (t*t)%mod;
-else
-return (((t*t)%mod)*a)%mod;
-}
-long int calculateKey(int a, int x, int n)
-{
-return power(a,x,n);
-}
-int main()
-{
-int n,g,x,a,y,b;
-printf("Enter the value of n and g : ");
-scanf("%d%d",&n,&g);
-printf("Enter the value of x for the first person : ");
-scanf("%d",&x);
-a=power(g,x,n);
-printf("Enter the value of y for the second person : ");
-scanf("%d",&y);
-b=power(g,y,n);
-printf("key for the first person is :%lld\n",power(b,x,n));
-printf("key for the second person is :%lld\n",power(a,y,n));
-getch();
+#include <stdio.h>
+#include <math.h>
+int main() {
+    int a, q, xa, xb, ya, yb, ka, kb;
+    printf("Enter the value of a: ");
+    scanf("%d", &a);
+    printf("Enter the value of q: ");
+    scanf("%d", &q);
+    printf("Enter the value of xa: ");
+    scanf("%d", &xa);
+    printf("Enter the value of xb: ");
+    scanf("%d", &xb);
+    ya = fmod(pow(a, xa), q);
+    yb = fmod(pow(a, xb), q);
+    ka = fmod(pow(yb, xa), q);
+    kb = fmod(pow(ya, xb), q);
+    printf("Secret key of user A: %d\n", ka);
+    printf("Secret key of user B: %d\n", kb);
+    return 0;
 }
