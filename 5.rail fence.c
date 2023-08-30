@@ -1,43 +1,28 @@
 #include <stdio.h>
 #include <string.h>
-void railFenceEncrypt(char *plaintext, int rails, char *ciphertext) {
-    int length = strlen(plaintext);
-    char railsArr[rails][length];
-    for (int i = 0; i < rails; i++) {
-        for (int j = 0; j < length; j++) {
-            railsArr[i][j] = '\0'; 
-        }
-    }
-    int row = 0;
-    int direction = 1;
-    for (int i = 0; i < length; i++) {
-        railsArr[row][i] = plaintext[i];
-        if (row == 0) {
-            direction = 1;
-        } else if (row == rails - 1) {
-            direction = -1;
-        }
-        row += direction;
-    }
+void railFenceEncrypt(char message[], int rails) {
+    int len = strlen(message);
+    char encrypted[len];
     int index = 0;
     for (int i = 0; i < rails; i++) {
-        for (int j = 0; j < length; j++) {
-            if (railsArr[i][j] != '\0') {
-                ciphertext[index++] = railsArr[i][j];
+    	for(int j = i; j < len; j += rails * 2 - 2) {
+            encrypted[index++] = message[j];
+            if (i != 0 && i != rails - 1 && j + (rails - i - 1) * 2 < len) {
+                encrypted[index++] = message[j + (rails - i - 1) * 2];
             }
         }
     }
-    ciphertext[index] = '\0';
+    encrypted[index] = '\0';
+    printf("Encrypted message: %s\n", encrypted);
 }
 int main() {
-    char plaintext[100];
-    char ciphertext[100];
+    char message[100];
     int rails;
-    printf("Enter the plaintext: ");
-    gets(plaintext);
+    printf("Enter the message to encrypt: ");
+    fgets(message, sizeof(message), stdin);
+    message[strcspn(message, "\n")] = '\0';
     printf("Enter the number of rails: ");
     scanf("%d", &rails);
-    railFenceEncrypt(plaintext, rails, ciphertext);
-    printf("Encrypted ciphertext: %s\n", ciphertext);
+    railFenceEncrypt(message, rails);
     return 0;
 }
